@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Acheter des Robux - Marketplace Clone</title>
+  <style>
+    :root {
+      --bg-color: #0b0b0d;
+      --header-bg: #111216;
+      --card-bg: #191b20;
+      --card-hover: #23262e;
+      --text-main: #f7f6f2;
+      --text-muted: #8b8f99;
+      --border-color: #272a33;
+      --accent-blue: #0084dd;
+      --accent-blue-hover: #0070bc;
+      --badge-bg: #2b1f3d;
+      --badge-text: #c084fc;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    header {
+      background-color: var(--header-bg);
+      border-bottom: 1px solid var(--border-color);
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    /* Logo Roblox carré incliné */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      font-weight: 900;
+      font-size: 20px;
+      letter-spacing: 1px;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .logo-square {
+      width: 14px;
+      height: 14px;
+      background: #fff;
+      transform: rotate(15deg);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-hole {
+      width: 4px;
+      height: 4px;
+      background: var(--header-bg);
+    }
+
+    nav {
+      display: flex;
+      gap: 16px;
+    }
+
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    nav a:hover, nav a.active {
+      color: var(--text-main);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .user-pill {
+      background-color: var(--card-bg);
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border-color);
+    }
+
+    /* CONTENU PRINCIPAL */
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 20px 60px;
+    }
+
+    /* BANNIÈRE PROMO */
+    .banner {
+      background: linear-gradient(135deg, #1f222b 0%, #15171d 100%);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 36px;
+    }
+
+    .banner h2 {
+      font-size: 20px;
+      margin-bottom: 6px;
+    }
+
+    .banner p {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .btn-subscribe {
+      background-color: var(--accent-blue);
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-subscribe:hover {
+      background-color: var(--accent-blue-hover);
+    }
+
+    .section-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    /* GRILLE DE PACKS */
+    .packages-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      transition: transform 0.15s, background-color 0.15s;
+    }
+
+    .card:hover {
+      background-color: var(--card-hover);
+      transform: translateY(-2px);
+    }
+
+    .badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: var(--badge-bg);
+      color: var(--badge-text);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 999px;
+      text-transform: uppercase;
+    }
+
+    .robux-icon {
+      width: 44px;
+      height: 44px;
+      background-color: #2a2d36;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+
+    .robux-icon svg {
+      width: 24px;
+      height: 24px;
+      fill: #fff;
+    }
+
+    .robux-amount {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .robux-bonus {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+
+    .price-btn {
+      width: 100%;
+      background: #282a32;
+      color: #fff;
+      border: 1px solid var(--border-color);
+      font-weight: 700;
+      font-size: 15px;
+      padding: 10px 0;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: auto;
+      transition: background 0.2s;
+    }
+
+    .price-btn:hover {
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-left">
+      <a href="#" class="logo">
+        R<span class="logo-square"><span class="logo-hole"></span></span>BLOX
+      </a>
+      <nav>
+        <a href="#">Charts</a>
+        <a href="#">Marketplace</a>
+        <a href="#">Create</a>
+        <a href="#" class="active">Robux</a>
+      </nav>
+    </div>
+    <div class="header-right">
+      <div class="user-pill">Builderman · 1,250 R$</div>
+    </div>
+  </header>
+
+  <!-- CONTENU -->
+  <main>
+    <!-- BANNIÈRE PROMO -->
+    <div class="banner">
+      <div>
+        <h2>Roblox Plus</h2>
+        <p>Plus d'avantages pour moins de Robux. Profitez de jusqu'à 25% de bonus.</p>
+      </div>
+      <button class="btn-subscribe">S'abonner</button>
+    </div>
+
+    <!-- PACKS DE ROBUX -->
+    <h1 class="section-title">Robux Packages</h1>
+
+    <div class="packages-grid">
+      <!-- 24 000 -->
+      <div class="card">
+        <div class="robux-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L3 7v10l9 5 9-5V7l-9-5zm0 4.2l5.4 3-5.4 3-5.4-3 5.4-3z"/></svg>
+        </div>
+        <div class="robux-amount">24,000</div>
+        <div class="robux-bonus">22,500 + 1,500 bonus</div>
+        <button class="price-btn">279.99 $</button>
+      </div>
+
+      <!-- 11 000 -->
+      <div class="card">
+        <div class="robux-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L3 7v10l9 5 9-5V7l-9-5zm0 4.2l5.4 3-5.4 3-5.4-3 5.4-3z"/></svg>
+        </div>
+        <div class="robux-amount">11,000</div>
+        <div class="robux-bonus">10,000 + 1,000 bonus</div>
+        <button class="price-btn">139.99 $</button>
+      </div>
+
+      <!-- 5 250 -->
+      <div class="card">
+        <div class="robux-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L3 7v10l9 5 9-5V7l-9-5zm0 4.2l5.4 3-5.4 3-5.4-3 5.4-3z"/></svg>
+        </div>
+        <div class="robux-amount">5,250</div>
+        <div class="robux-bonus">4,500 + 750 bonus</div>
+        <button class="price-btn">69.99 $</button>
+      </div>
+
+      <!-- 3 625 (Recommandé) -->
+      <div class="card">
+        <span class="badge">Pour vous</span>
+        <div class="robux-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L3 7v10l9 5 9-5V7l-9-5zm0 4.2l5.4 3-5.4 3-5.4-3 5.4-3z"/></svg>
+        </div>
+        <div class="robux-amount">3,625</div>
+        <div class="robux-bonus">3,150 + 475 bonus</div>
+        <button class="price-btn">49.99 $</button>
+      </div>
+
+      <!-- 2 000 -->
+      <div class="card">
+        <div class="robux-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L3 7v10l9 5 9-5V7l-9-5zm0 4.2l5.4 3-5.4 3-5.4-3 5.4-3z"/></svg>
+        </div>
+        <div class="robux-amount">2,000</div>
+        <div class="robux-bonus">1,700 + 300 bonus</div>
+        <button class="price-btn">27.99 $</button>
+      </div>
+
+      <!-- 1 500 -->
+      <div class="card">
+        <div class="robux-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L3 7v10l9 5 9-5V7l-9-5zm0 4.2l5.4 3-5.4 3-5.4-3 5.4-3z"/></svg>
+        </div>
+        <div class="robux-amount">1,500</div>
+        <div class="robux-bonus">1,200 + 300 bonus</div>
+        <button class="price-btn">19.99 $</button>
+      </div>
+
+      <!-- 1 000 -->
+      <div class="card">
+        <div class="robux-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L3 7v10l9 5 9-5V7l-9-5zm0 4.2l5.4 3-5.4 3-5.4-3 5.4-3z"/></svg>
+        </div>
+        <div class="robux-amount">1,000</div>
+        <div class="robux-bonus">800 + 200 bonus</div>
+        <button class="price-btn">13.99 $</button>
+      </div>
+
+      <!-- 500 -->
+      <div class="card">
+        <div class="robux-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L3 7v10l9 5 9-5V7l-9-5zm0 4.2l5.4 3-5.4 3-5.4-3 5.4-3z"/></svg>
+        </div>
+        <div class="robux-amount">500</div>
+        <div class="robux-bonus">400 + 100 bonus</div>
+        <button class="price-btn">6.99 $</button>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>
